@@ -1,0 +1,61 @@
+name: Salesforce CI/CD
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [dev, main]
+
+jobs:
+  salesforce:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Salesforce CLI
+        uses: salesforcecli/github-action@v2
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+        continue-on-error: true
+
+      # Authenticate using SFDX Auth URL secrets
+      - name: Auth DEV via SFDX URL
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "${{ secrets.dev }}" > dev.sfdxurl
+          sf org login sfdx-url --sfdx-url-file dev.sfdxurl --alias dev
+
+      - name: Auth PROD via SFDX URL
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.prod }}" > prod.sfdxurl
+          sf org login sfdx-url --sfdx-url-file prod.sfdxurl --alias prod
+
+      - name: Validate (check-only)
+        run: |
+          BRANCH="${GITHUB_REF##*/}"
+          if [ "$BRANCH" = "dev" ]; then
+            sf project deploy validate --target-org dev --test-level RunLocalTests --wait 60
+          else
+            sf project deploy validate --target-org prod --test-level RunLocalTests --wait 60
+          fi
+
+      - name: Deploy (only on push)
+        if: github.event_name == 'push'
+        run: |
+          BRANCH="${GITHUB_REF##*/}"
+          if [ "$BRANCH" = "dev" ]; then
+            sf project deploy start --target-org dev --test-level RunLocalTests --wait 60
+          else
+            sf project deploy start --target-org prod --test-level RunLocalTests --wait 60
+          fi

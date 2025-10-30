@@ -1,0 +1,58 @@
+<template>
+    <lightning-card title="Todo List">
+    <!-- Todo list -->
+    <template if:true={todosData}>
+        <div class="slds-box slds-m-around_small">
+            <h2 class="slds-text-heading_medium slds-m-bottom_small">My Todo List</h2>
+            
+            <template for:each={todosData} for:item="todo">
+                <div key={todo.Id} class="slds-box slds-m-bottom_x-small slds-p-around_small">
+                    <div class="slds-grid slds-grid_vertical-align-start">
+                        <!-- Checkbox -->
+                        <div class="slds-col slds-size_1-of-12">
+                            <input 
+                                type="checkbox" 
+                                checked={todo.Completed__c}
+                                data-id={todo.Id}
+                                onchange={handleToggle}
+                                disabled={isUpdating}
+                                class="slds-checkbox"
+                            />
+                        </div>
+                        
+                        <!-- Todo content -->
+                        <div class="slds-col slds-size_11-of-12">
+                            <div class="slds-text-heading_small slds-m-bottom_xx-small">
+                                {todo.Name}
+                            </div>
+                            <div class="slds-text-color_weak slds-text-body_small">
+                                {todo.Description__c}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+
+      <!-- Error display -->
+    <template if:true={todosError}>
+        <div class="slds-box slds-theme_error slds-m-around_small">
+            <p class="slds-text-color_error">Error loading todos</p>
+        </div>
+    </template>
+
+        <template if:true={isUpdating}>
+            <div class="slds-p-around_small">
+                <lightning-spinner size="small"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Empty state -->
+    <template if:false={todosData.length}>
+        <div class="slds-text-align_center slds-p-around_large slds-text-color_weak">
+            No todos found. Create your first todo!
+        </div>
+    </template>
+    </lightning-card>
+</template>
