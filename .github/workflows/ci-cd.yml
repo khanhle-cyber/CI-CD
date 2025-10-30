@@ -19,7 +19,7 @@ jobs:
           node-version: 20
 
       - name: Install Salesforce CLI
-        uses: salesforcecli/actions/setup@v3
+        uses: salesforcecli/github-actions/setup@main
 
       - name: Install dependencies
         run: npm ci
