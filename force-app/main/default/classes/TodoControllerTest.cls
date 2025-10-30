@@ -199,7 +199,7 @@ private class TodoControllerTest {
     Test.stopTest();
   }
   @IsTest
-  static void setCompleted_NullId_ThrowsException() {
+  static void setCompleted_NullId_Throws() {
     Test.startTest();
     try {
       // Passing a null Id
@@ -216,7 +216,7 @@ private class TodoControllerTest {
   }
 
   @IsTest
-  static void setCompleted_NullId_ThrowsException() {
+  static void setCompleted_NullId_ThrowsExcepon() {
     Test.startTest();
     try {
       // Passing a null Id
@@ -233,7 +233,7 @@ private class TodoControllerTest {
   }
 
   @IsTest
-  static void setCompleted_NullId_ThrowsException() {
+  static void setCompleted_NullId_ThrowsExcepon() {
     Test.startTest();
     try {
       // Passing a null Id
@@ -250,7 +250,7 @@ private class TodoControllerTest {
   }
 
   @IsTest
-  static void setCompleted_NullId_ThrowsException() {
+  static void setCompleted_NullId_ThrowsExceptin() {
     Test.startTest();
     try {
       // Passing a null Id
