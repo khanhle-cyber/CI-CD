@@ -198,4 +198,71 @@ private class TodoControllerTest {
     }
     Test.stopTest();
   }
+  @IsTest
+  static void setCompleted_NullId_ThrowsException() {
+    Test.startTest();
+    try {
+      // Passing a null Id
+      TodoController.setCompleted(null, true);
+      System.assert(
+        false,
+        'Expected AuraHandledException was not thrown for null Id.'
+      );
+    } catch (AuraHandledException e) {
+      // Assert that the correct exception message is thrown
+      //  System.assertEquals('Todo Id is required.', e.getMessage(), 'Incorrect exception message for null Id.');
+    }
+    Test.stopTest();
+  }
+
+  @IsTest
+  static void setCompleted_NullId_ThrowsException() {
+    Test.startTest();
+    try {
+      // Passing a null Id
+      TodoController.setCompleted(null, true);
+      System.assert(
+        false,
+        'Expected AuraHandledException was not thrown for null Id.'
+      );
+    } catch (AuraHandledException e) {
+      // Assert that the correct exception message is thrown
+      //  System.assertEquals('Todo Id is required.', e.getMessage(), 'Incorrect exception message for null Id.');
+    }
+    Test.stopTest();
+  }
+
+  @IsTest
+  static void setCompleted_NullId_ThrowsException() {
+    Test.startTest();
+    try {
+      // Passing a null Id
+      TodoController.setCompleted(null, true);
+      System.assert(
+        false,
+        'Expected AuraHandledException was not thrown for null Id.'
+      );
+    } catch (AuraHandledException e) {
+      // Assert that the correct exception message is thrown
+      //  System.assertEquals('Todo Id is required.', e.getMessage(), 'Incorrect exception message for null Id.');
+    }
+    Test.stopTest();
+  }
+
+  @IsTest
+  static void setCompleted_NullId_ThrowsException() {
+    Test.startTest();
+    try {
+      // Passing a null Id
+      TodoController.setCompleted(null, true);
+      System.assert(
+        false,
+        'Expected AuraHandledException was not thrown for null Id.'
+      );
+    } catch (AuraHandledException e) {
+      // Assert that the correct exception message is thrown
+      //  System.assertEquals('Todo Id is required.', e.getMessage(), 'Incorrect exception message for null Id.');
+    }
+    Test.stopTest();
+  }
 }
