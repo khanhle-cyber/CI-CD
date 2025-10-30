@@ -32,13 +32,13 @@ jobs:
       - name: Auth DEV via SFDX URL
         if: github.ref == 'refs/heads/dev'
         run: |
-          echo "${{ secrets.dev }}" > dev.sfdxurl
+          echo "${{ secrets.DEV }}" > dev.sfdxurl
           sf org login sfdx-url --sfdx-url-file dev.sfdxurl --alias dev
 
       - name: Auth PROD via SFDX URL
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "${{ secrets.prod }}" > prod.sfdxurl
+          echo "${{ secrets.PROD }}" > prod.sfdxurl
           sf org login sfdx-url --sfdx-url-file prod.sfdxurl --alias prod
 
       - name: Validate (check-only)
