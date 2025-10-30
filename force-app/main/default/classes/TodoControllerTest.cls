@@ -193,9 +193,101 @@ private class TodoControllerTest {
         'Expected AuraHandledException was not thrown for null Id.'
       );
     } catch (AuraHandledException e) {
-      // Assert that the correct exception message is thrown
-      //  System.assertEquals('Todo Id is required.', e.getMessage(), 'Incorrect exception message for null Id.');
+      // intentionally not asserting message to avoid org locale variations
     }
     Test.stopTest();
+  }
+
+  // --- Additional tests to cover FLS/CRUD exception branches via test seam ---
+
+  @IsTest
+  static void getTodos_NoObjectAccess_Throws() {
+    // Backup original seam
+    TodoController.Access original = TodoController.access;
+    TodoController.access = new MockAccess(false, true, true, true);
+    try {
+      Test.startTest();
+      try {
+        TodoController.getTodos();
+        System.assert(
+          false,
+          'Expected AuraHandledException for no object access.'
+        );
+      } catch (AuraHandledException e) {
+        // ok
+      }
+      Test.stopTest();
+    } finally {
+      // restore
+      TodoController.access = original;
+    }
+  }
+
+  @IsTest
+  static void getTodos_NoFieldAccess_Throws() {
+    TodoController.Access original = TodoController.access;
+    TodoController.access = new MockAccess(true, false, true, true);
+    try {
+      Test.startTest();
+      try {
+        TodoController.getTodos();
+        System.assert(
+          false,
+          'Expected AuraHandledException for no field access.'
+        );
+      } catch (AuraHandledException e) {
+        // ok
+      }
+      Test.stopTest();
+    } finally {
+      TodoController.access = original;
+    }
+  }
+
+  @IsTest
+  static void setCompleted_NoObjectUpdate_Throws() {
+    // pick any existing todo to pass non-null id check
+    Todo__c anyTodo = [SELECT Id FROM Todo__c LIMIT 1];
+
+    TodoController.Access original = TodoController.access;
+    TodoController.access = new MockAccess(true, true, false, true);
+    try {
+      Test.startTest();
+      try {
+        TodoController.setCompleted(anyTodo.Id, true);
+        System.assert(
+          false,
+          'Expected AuraHandledException for no object update permission.'
+        );
+      } catch (AuraHandledException e) {
+        // ok
+      }
+      Test.stopTest();
+    } finally {
+      TodoController.access = original;
+    }
+  }
+
+  @IsTest
+  static void setCompleted_NoFieldUpdate_Throws() {
+    Todo__c anyTodo = [SELECT Id FROM Todo__c LIMIT 1];
+
+    TodoController.Access original = TodoController.access;
+    TodoController.access = new MockAccess(true, true, true, false);
+    try {
+      Test.startTest();
+      try {
+        TodoController.setCompleted(anyTodo.Id, true);
+        System.assert(
+          false,
+          'Expected AuraHandledException for no field update permission.'
+        );
+      } catch (AuraHandledException e) {
+        // ok
+      }
+      Test.stopTest();
+    } finally {
+      TodoController.access = original;
+    }
   }
 }
