@@ -1,0 +1,36 @@
+name: Promote to Production
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type "DEPLOY" to confirm production deployment'
+        required: true
+        type: string
+
+jobs:
+  promote:
+    runs-on: ubuntu-latest
+    if: github.event.inputs.confirm == 'DEPLOY'
+    steps:
+      - name: Checkout dev branch
+        uses: actions/checkout@v4
+        with:
+          ref: dev
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Push dev to main
+        run: |
+          git push origin dev:main --force
+
+      - name: Deployment Initiated
+        run: |
+          echo "✅ Dev branch has been pushed to main"
+          echo "🚀 Production deployment workflow will start automatically"
+          echo "📊 Check the 'Salesforce CI/CD' workflow for deployment status"
