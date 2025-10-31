@@ -22,8 +22,8 @@ jobs:
 
       - name: Configure Git
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "khanhle-cyber"
+          git config user.email "khanh.le@omn1solution.com"
 
       - name: Push dev to main
         run: |
